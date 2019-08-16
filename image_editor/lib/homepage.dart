@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:image_editor/cloud_uplode.dart';
+import 'package:image_editor/cloud_uploder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
