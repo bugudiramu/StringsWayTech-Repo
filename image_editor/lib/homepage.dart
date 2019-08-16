@@ -1,7 +1,6 @@
 import 'dart:io';
+import 'package:image_editor/cloud_uploder.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,49 +12,46 @@ class _HomePageState extends State<HomePage> {
   File _image;
 
   getImageFile(ImageSource source) async {
-
-    //Clicking or Picking from Gallery
-
     var image = await ImagePicker.pickImage(source: source);
 
-    //Cropping the image
-
-    File croppedFile = await ImageCropper.cropImage(
-      sourcePath: image.path
-    );
-
-    //Compress the image
-
-    var result = await FlutterImageCompress.compressAndGetFile(
-      croppedFile.path,
-      croppedFile.path,
-      quality: 60,
-    );
-
     setState(() {
-      _image = result;
-      print(_image.lengthSync());
+      _image = image;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
     print(_image?.lengthSync());
     return Scaffold(
       appBar: AppBar(
-        title: Text("StringsWay Sample"),
+        title: Text("StringsWay Image Editor"),
+        centerTitle: true,
       ),
-      body: Center(
-        child: _image == null
-            ? Text("Image")
-            : Image.file(
-          _image,
-          height: 200,
-          width: 200,
+      body: Container(
+        alignment: Alignment.center,
+        height: height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child: _image == null
+                  ? Text(
+                      "Image will be shown here".toUpperCase(),
+                    )
+                  : Image.file(
+                      _image,
+                      height: 300,
+                      width: 300,
+                    ),
+            ),
+            SizedBox(height: 20.0),
+            CloudUploader(file: _image),
+          ],
         ),
       ),
       floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FloatingActionButton.extended(
             label: Text("Camera"),
@@ -71,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () => getImageFile(ImageSource.gallery),
             heroTag: UniqueKey(),
             icon: Icon(Icons.photo_library),
-          )
+          ),
         ],
       ),
     );
