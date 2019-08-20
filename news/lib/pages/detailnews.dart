@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:news/pages/helloworld.dart';
 
 class DetaileNews extends StatefulWidget {
   final String title;
@@ -19,6 +21,33 @@ class DetaileNews extends StatefulWidget {
 
 class _DetaileNewsState extends State<DetaileNews> {
   @override
+  void initState() {
+    super.initState();
+    this.initDynamicLinks();
+  }
+
+  void initDynamicLinks() async {
+    final PendingDynamicLinkData data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    final Uri deepLink = data?.link;
+    if (deepLink != null) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyHelloWorld()));
+    }
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData dynamicLink) async {
+      print('Success');
+      final Uri deepLink = dynamicLink?.link;
+      if (deepLink != null) {
+        Navigator.pushNamed(context, deepLink.path);
+      }
+    }, onError: (OnLinkErrorException e) async {
+      print('Error');
+      print(e.message);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -37,17 +66,23 @@ class _DetaileNewsState extends State<DetaileNews> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(
-                  top: 10.0, bottom: 20.0, left: 10.0, right: 10.0),
-              child: Row(
-                children: <Widget>[
-                  Text("By "),
-                  Text(
-                    widget.pubby == null ? "Ananymous" : widget.pubby,
-                    style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.w600),
-                  ),
-                ],
+              // padding: const EdgeInsets.only(
+              //     top: 10.0, bottom: 20.0, left: 10.0, right: 10.0),
+              child: ListTile(
+                title: Row(
+                  children: <Widget>[
+                    Text("By "),
+                    Text(
+                      widget.pubby == null ? "Ananymous" : widget.pubby,
+                      style: TextStyle(
+                          color: Colors.blue, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.share),
+                  onPressed: () {},
+                ),
               ),
             ),
             Hero(

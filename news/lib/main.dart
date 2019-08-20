@@ -10,6 +10,9 @@ class MyApp extends StatelessWidget {
       // theme: ThemeData(brightness: Brightness.dark),
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      // routes: {
+      //   '/hello': (BuildContext context) => MyHelloWorld(),
+      // },
     );
   }
 }
