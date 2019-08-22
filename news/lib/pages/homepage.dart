@@ -9,8 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Dynamic link in firebase stringswaytechnewsapp.page.link
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+   // Uri deepLink;
   @override
   void initState() {
     super.initState();
@@ -21,6 +20,7 @@ class _HomePageState extends State<HomePage> {
     final PendingDynamicLinkData data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     final Uri deepLink = data?.link;
+    print(deepLink);
 
     if (deepLink != null) {
       Navigator.pushNamed(context, deepLink.path);
@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
       print(e.message);
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-// import 'package:news/pages/helloworld.dart';
+import 'package:share/share.dart';
 
 class DetaileNews extends StatefulWidget {
   final String title;
@@ -20,34 +19,8 @@ class DetaileNews extends StatefulWidget {
 }
 
 class _DetaileNewsState extends State<DetaileNews> {
-  /*
-  @override
-  void initState() {
-    super.initState();
-    this.initDynamicLinks();
-  }
+  var myUrl = "https://stringswaytechnewsapp.page.link/NSef";
 
-  void initDynamicLinks() async {
-    final PendingDynamicLinkData data =
-        await FirebaseDynamicLinks.instance.getInitialLink();
-    final Uri deepLink = data?.link;
-    if (deepLink != null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HelloWorld()));
-    }
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData dynamicLink) async {
-      print('Success');
-      final Uri deepLink = dynamicLink?.link;
-      if (deepLink != null) {
-        Navigator.pushNamed(context, deepLink.path);
-      }
-    }, onError: (OnLinkErrorException e) async {
-      print('Error');
-      print(e.message);
-    });
-  }
-*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +55,9 @@ class _DetaileNewsState extends State<DetaileNews> {
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.share),
-                  onPressed: () {},
+                  onPressed: () {
+                    Share.share("Visit My News At $myUrl");
+                  },
                 ),
               ),
             ),
