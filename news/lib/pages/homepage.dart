@@ -1,7 +1,7 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:news/eventstab.dart';
-import 'package:news/newstab.dart';
+import 'package:news/tabs/eventstab.dart';
+import 'package:news/tabs/newstab.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // final Uri dynamicUrl = await parameters.buildUrl();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
-import 'package:news/pages/helloworld.dart';
+// import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+// import 'package:news/pages/helloworld.dart';
 
 class DetaileNews extends StatefulWidget {
   final String title;
@@ -20,6 +20,7 @@ class DetaileNews extends StatefulWidget {
 }
 
 class _DetaileNewsState extends State<DetaileNews> {
+  /*
   @override
   void initState() {
     super.initState();
@@ -32,7 +33,7 @@ class _DetaileNewsState extends State<DetaileNews> {
     final Uri deepLink = data?.link;
     if (deepLink != null) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyHelloWorld()));
+          context, MaterialPageRoute(builder: (context) => HelloWorld()));
     }
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData dynamicLink) async {
@@ -46,7 +47,7 @@ class _DetaileNewsState extends State<DetaileNews> {
       print(e.message);
     });
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
