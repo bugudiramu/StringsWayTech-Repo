@@ -1,7 +1,19 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:news/pages/homepage.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-void main() => runApp(MyApp());
+// void main() => runApp(MyApp());
+void main() {
+  Crashlytics.instance.enableInDevMode = true;
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+  runZoned<Future<void>>(
+    () async {
+      runApp(MyApp());
+    },
+    onError: Crashlytics.instance.recordError,
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override

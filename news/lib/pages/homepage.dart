@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:news/tabs/eventstab.dart';
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   // Uri deepLink;
+  // Uri deepLink;
   @override
   void initState() {
     super.initState();
@@ -38,6 +39,7 @@ class _HomePageState extends State<HomePage> {
       print(e.message);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -54,6 +56,15 @@ class _HomePageState extends State<HomePage> {
               Tab(text: "Events"),
             ],
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.card_membership),
+              onPressed: () {
+                // Crashlytics.instance.getVersion();
+                Crashlytics.instance.crash();
+              },
+            ),
+          ],
         ),
         body: Container(
           child: TabBarView(
