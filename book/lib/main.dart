@@ -1,14 +1,21 @@
-import 'package:book/book.dart';
+import 'package:book/postScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'blocs/postProvider.dart';
+
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Book(),
-      debugShowCheckedModeBanner: false,
+    return ChangeNotifierProvider<PostBloc>(
+      builder:(_) => PostBloc(),
+      
+      child: MaterialApp(
+        home: PostHomePage(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
