@@ -14,8 +14,6 @@ class _PostHomePageState extends State<PostHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // final _formKey = GlobalKey<FormState>();
-    // TextEditingController _controller;
     Post post = Post();
     final PostBloc postBloc = Provider.of<PostBloc>(context);
     setState(() {
@@ -32,7 +30,7 @@ class _PostHomePageState extends State<PostHomePage> {
               itemBuilder: (_, int i) {
                 return GestureDetector(
                   onTap: () {
-                    _showUpdateDialog(post, i);
+                    _showUpdateDialog(i);
                   },
                   onLongPress: () {
                     _showDeletePostDialog(post, i);
@@ -76,6 +74,12 @@ class _PostHomePageState extends State<PostHomePage> {
           : Center(
               child: CircularProgressIndicator(),
             ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          // _showAddPostDialog(post);
+        },
+      ),
     );
   }
 
@@ -111,58 +115,117 @@ class _PostHomePageState extends State<PostHomePage> {
         });
   }
 
-  Future<void> _showUpdateDialog(post, index) {
+  Future<void> _showUpdateDialog(index) {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Row(
-              children: <Widget>[
-                Expanded(
-                  child: ListTile(
-                    title: TextField(
-                      controller: TextEditingController(
-                          text: Provider.of<PostBloc>(context)
-                              .listPost[index]
-                              .title
-                              .toString()),
-                      onChanged: (text) {
-                        setState(() {
-                          Provider.of<PostBloc>(context).listPost[index].title =
-                              text;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Enter A Post",
-                        labelText: "Post",
-                        icon: Icon(Icons.event_note),
-                      ),
-                      autofocus: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Row(
+            children: <Widget>[
+              Expanded(
+                child: ListTile(
+                  title: TextField(
+                    controller: TextEditingController(
+                        text: Provider.of<PostBloc>(context)
+                            .listPost[index]
+                            .title
+                            .toString()),
+                    onChanged: (text) {
+                      setState(() {
+                        Provider.of<PostBloc>(context).listPost[index].title =
+                            text;
+                        print(text);
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Enter A Post",
+                      labelText: "Post",
+                      icon: Icon(Icons.event_note),
                     ),
+                    autofocus: true,
                   ),
                 ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text("Cancel"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              FlatButton(
-                child: Text("Save"),
-                onPressed: () async {
-                  // Map<String, dynamic> params = Map<String, dynamic>();
-                  // params['id'] = post.id;
-                  // params['title'] = post.title;
-                  // params['body'] = post.body;
-                  Navigator.pop(context);
-                  await Provider.of<PostBloc>(context).updatePost(index);
-                },
               ),
             ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text("Save"),
+              onPressed: () async {
+                // Map<String, dynamic> params = Map<String, dynamic>();
+                // params['id'] = post.id;
+                // params['title'] = post.title;
+                // params['body'] = post.body;
+                Navigator.pop(context);
+                await Provider.of<PostBloc>(context).updatePost(index);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showAddPostDialog(newPost) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController textController = TextEditingController();
+        return AlertDialog(
+          content: Row(
+            children: <Widget>[
+              Expanded(
+                child: ListTile(
+                  title: TextField(
+                    controller: TextEditingController(
+                        text: textController.text.toString()),
+                    onChanged: (text) {
+                      setState(() {
+                        textController.text = text;
+                        print(textController.text);
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: "Enter A Post",
+                      labelText: "Post",
+                      icon: Icon(Icons.event_note),
+                    ),
+                    autofocus: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text("Save"),
+              onPressed: () async {
+                // newPost.title = textController.text;
+                // Provider.of<PostBloc>(context).listPost.add(newPost.title);
+                Navigator.pop(context);
+
+                Map<String, dynamic> params = Map<String, dynamic>();
+                params['id'] = newPost.id;
+                params['title'] = textController.text.toString();
+                params['body'] = textController.text.toString();
+                Provider.of<PostBloc>(context).createPost(params);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
