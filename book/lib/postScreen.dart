@@ -1,73 +1,3 @@
-// import 'package:book/blocs/postProvider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-
-// class PostHomePage extends StatefulWidget {
-//   @override
-//   _PostHomePageState createState() => _PostHomePageState();
-// }
-
-// class _PostHomePageState extends State<PostHomePage> {
-
-//   final _key = GlobalKey<ScaffoldState>();
-//   @override
-//   Widget build(BuildContext context) {
-//     final PostBloc postBloc = Provider.of<PostBloc>(context,listen:false);
-//     postBloc.getPost();
-//     return Scaffold(
-//       key: _key,
-//       appBar: AppBar(
-//         title: Text("Posts"),
-//       ),
-//       body: postBloc.listPost != null
-//           ? ListView.builder(
-//               itemCount: postBloc.listPost.length,
-//               itemBuilder: (_, int i) {
-//                 return Card(
-//                   child: Padding(
-//                     padding: const EdgeInsets.symmetric(
-//                         vertical: 32.0, horizontal: 16.0),
-//                     child: ListTile(
-//                       leading: CircleAvatar(
-//                         child: Text(
-//                           postBloc.listPost[i].title[0]
-//                               .toString()
-//                               .toUpperCase(),
-//                           style: TextStyle(
-//                             fontWeight: FontWeight.w900,
-//                             fontSize: 20.0,
-//                           ),
-//                         ),
-//                       ),
-//                       title: Text(
-//                         postBloc.listPost[i].title.toString(),
-//                         style: TextStyle(
-//                             fontSize: 22, fontWeight: FontWeight.bold),
-//                       ),
-//                       trailing: IconButton(
-//                         icon: Icon(Icons.delete),
-//                         onPressed: () {
-//                           postBloc.deletePost(i);
-//                           Future.delayed(Duration(seconds: 1)).then(
-//                             (_) => _key.currentState.showSnackBar(
-//                               SnackBar(
-//                                 // duration: Duration(minutes: 1),
-//                                 content: Text('Item $i is deleted'),
-//                               ),
-//                             ),
-//                           );
-//                         },
-//                       ),
-//                     ),
-//                   ),
-//                 );
-//               })
-//           : Center(
-//               child: CircularProgressIndicator(),
-//             ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -105,7 +35,7 @@ class _PostHomePageState extends State<PostHomePage> {
                     _showUpdateDialog(post, i);
                   },
                   onLongPress: () {
-                    _showDeletePostDialog(i);
+                    _showDeletePostDialog(post, i);
                   },
                   child: Card(
                     child: Padding(
@@ -149,7 +79,7 @@ class _PostHomePageState extends State<PostHomePage> {
     );
   }
 
-  Future<void> _showDeletePostDialog(index) {
+  Future<void> _showDeletePostDialog(post, index) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -166,11 +96,14 @@ class _PostHomePageState extends State<PostHomePage> {
                 child: Text("Delete"),
                 onPressed: () {
                   // Provider.of<PostBloc>(context).deleteThePost(index);
+
                   Provider.of<PostBloc>(context).deletePost(index);
+                  _key.currentState.showSnackBar(
+                    SnackBar(
+                      content: Text("Item deleted at index $index"),
+                    ),
+                  );
                   Navigator.pop(context);
-                  _key.currentState.showSnackBar(SnackBar(
-                    content: Text("Item deleted at index $index"),
-                  ));
                 },
               ),
             ],
@@ -220,12 +153,12 @@ class _PostHomePageState extends State<PostHomePage> {
               FlatButton(
                 child: Text("Save"),
                 onPressed: () async {
-                  Map<String, dynamic> params = Map<String, dynamic>();
-                  params['id'] = post.id;
-                  params['title'] = post.title;
-                  params['body'] = post.body;
-                  await Provider.of<PostBloc>(context).updatePost(params);
+                  // Map<String, dynamic> params = Map<String, dynamic>();
+                  // params['id'] = post.id;
+                  // params['title'] = post.title;
+                  // params['body'] = post.body;
                   Navigator.pop(context);
+                  await Provider.of<PostBloc>(context).updatePost(index);
                 },
               ),
             ],

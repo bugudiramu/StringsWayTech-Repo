@@ -46,10 +46,10 @@ class PostBloc extends ChangeNotifier {
     }
   }
 
-  Future<Post> updatePost(Map<String, dynamic> params) async {
-    String url = "https://jsonplaceholder.typicode.com/posts/${params['id']}";
-    http.Response response = await http.put(Uri.encodeFull(url),
-        headers: {"Accept": "application/json"}, body: params);
+  Future<Post> updatePost(Posts data) async {
+    String url = "https://jsonplaceholder.typicode.com/posts/${data.id}";
+    http.Response response = await http
+        .put(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       var jsonData = json.decode(response.body);
 
