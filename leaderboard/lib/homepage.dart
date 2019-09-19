@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
                   child: StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance
                           .collection('swleaderboard')
+                          .orderBy("rating",descending: true)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {

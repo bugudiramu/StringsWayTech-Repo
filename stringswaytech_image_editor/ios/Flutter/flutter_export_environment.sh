@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/home/ash/Downloads/flutter_linux_v1.2.1-stable/flutter"
-export "FLUTTER_APPLICATION_PATH=/home/ash/flutterfiles/StringsWayTech-Repo/book"
+export "FLUTTER_APPLICATION_PATH=/home/ash/flutterfiles/StringsWayTech-Repo/stringswaytech_image_editor"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"
