@@ -43,12 +43,12 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
+                  // Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
                   // customCard(),
                   SizedBox(width: 1.0),
-                  leaderCard(140.0, Colors.white70),
+                  Expanded(child: leaderCard(Colors.white70)),
                   SizedBox(width: 1.0),
-                  Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
+                  // Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
                 ],
               ),
               SizedBox(
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   child: StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance
                           .collection('swleaderboard')
-                          .orderBy("rating",descending: true)
+                          .orderBy("rating", descending: true)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -121,50 +121,100 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget leaderCard(double width, Color color) {
-    return GestureDetector(
-      onTap: () {
-        print("GestureDetector tapped!");
-      },
-      child: Container(
-        alignment: Alignment.center,
-        // color: Colors.white70,
-        color: color,
-        height: 140.0,
-        // width: 120.0,
-        width: width,
-        padding: const EdgeInsets.all(2.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: CircleAvatar(),
-            ),
-            SizedBox(height: 5.0),
-            Text(
-              "Harry",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 2.0),
-            Text(
-              "\$ 130",
-              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w800),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: Colors.blue,
-              ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
-              child: Text("First".toUpperCase(),
-                  style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        ),
-      ),
-    );
+  Widget leaderCard(Color color) {
+    int i=0;
+    return Container(
+      height: 140,
+      width: 120,
+      color: color,
+      alignment: Alignment.center,
+      child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance
+              .collection('swleaderboard')
+              .orderBy("rating", descending: true)
+              .limit(3)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return LinearProgressIndicator();
+            }
+            return new GridView.count(
+              crossAxisCount: 3,
+              mainAxisSpacing:0.5,
+              childAspectRatio: 0.72,
+              children:
+                  snapshot.data.documents.map((DocumentSnapshot document) {
+                    i++;
+                return new Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Positioned.fill(
+                      child: Card(
+                        key: ValueKey(document.data),
+                        color: getcolor(i),
+                                                //elevation: 3,
+                                                child: Column(
+                                                  //crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(document['name']),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text("\$" + document['price']),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Container(
+                                                      child: gettext(i),
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(6),
+                                                          
+                                                          color: Colors.red),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: -1,
+                                              left: 33,
+                                              child: CircleAvatar(
+                                                child: Image.network(document['profile_pic']),
+                                              ),
+                                            ),
+                                          ],
+                                          overflow: Overflow.visible,
+                                        );
+                                      }).toList(),
+                                      //crollDirection: Axis.vertical,
+                                    );
+                                  }),
+                            );
+                          }
+                        
+                          getcolor(int i) {
+                            if(i==1)
+                            return Colors.white;
+                            else return Colors.white60;
+                          }
+
+  gettext(int i) {
+    if(i==1)
+    return  Text("first.".toUpperCase(),style: TextStyle(
+      color: Colors.amberAccent
+    ),);
+  else if(i==2)
+    return  Text("second".toUpperCase(),style: TextStyle(
+      color: Colors.cyan));
+    else if(i==3)
+    return  Text("Third".toUpperCase(),style: TextStyle(
+      color: Colors.cyan));
   }
+
+  
 }
