@@ -7,23 +7,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // final List items = List.generate(20, (i) => i);
+
+
   @override
   Widget build(BuildContext context) {
-    // final name = Firestore.instance
-    //     .collection('swleaderboard')
-    //     .document()
-    //     .get()
-    //     .then((DocumentSnapshot ds) {
-    //   return ds['name'].toString();
-    // });
-    // final price = Firestore.instance
-    //     .collection('swleaderboard')
-    //     .document()
-    //     .get()
-    //     .then((DocumentSnapshot ds) {
-    //   return ds['price'].toString();
-    // });
     return Scaffold(
       appBar: AppBar(
         title: Text('LeaderBoard'.toUpperCase()),
@@ -43,12 +30,27 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
-                  // customCard(),
+                  Expanded(
+                    child: leaderCard(
+                  
+                      120.0,
+                      Color(0Xffc7ecee),
+                    ),
+                  ),
                   SizedBox(width: 1.0),
-                  leaderCard(140.0, Colors.white70),
+                  leaderCard(
+              
+                    140.0,
+                    Colors.white70,
+                  ),
                   SizedBox(width: 1.0),
-                  Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
+                  Expanded(
+                    child: leaderCard(
+                 
+                      120.0,
+                      Color(0Xffc7ecee),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(
@@ -64,20 +66,25 @@ class _HomePageState extends State<HomePage> {
                   child: StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance
                           .collection('swleaderboard')
+                          .orderBy('rating', descending: true)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
+                        // items.add(snapshot.data);
+
                         if (snapshot.hasError) {
                           return Text(snapshot.error);
                         }
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
-                            return Center(child: new Text('Loading...'));
+                            return Center(child: Text('Loading...'));
                           default:
-                            return new ListView(
+                            return ListView(
                               children: snapshot.data.documents
                                   .map((DocumentSnapshot document) {
-                                return new ListTile(
+                                // items.add(document);
+                                return ListTile(
+                                  onTap: () {},
                                   leading: Container(
                                     height: 80.0,
                                     width: 60.0,
@@ -89,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                                               document['profile_pic']),
                                         )),
                                   ),
-                                  title: new Text(document['name']
+                                  title: Text(document['name']
                                       .toString()
                                       .toUpperCase()),
                                   subtitle: new Text("\$ ${document['price']}"),
@@ -127,10 +134,8 @@ class _HomePageState extends State<HomePage> {
       },
       child: Container(
         alignment: Alignment.center,
-        // color: Colors.white70,
         color: color,
         height: 140.0,
-        // width: 120.0,
         width: width,
         padding: const EdgeInsets.all(2.0),
         child: Column(
@@ -140,7 +145,7 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(height: 5.0),
             Text(
-              "Harry",
+              "harry",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 2.0),
