@@ -138,9 +138,10 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
            Positioned(
-            top: 10,
-            left: 70,
-            child:  Icon(MdiIcons.crown) 
+            
+            left: 63,
+            child:  Icon(MdiIcons.crown,
+            size: 35,) 
           ),
         ],
       ),
