@@ -7,7 +7,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static List list=[];
+  static int i=0;
+    _getlbaord(){
+      return leaderCard();
+
+  }
   // final List items = List.generate(20, (i) => i);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+
+  }
+
+ 
   @override
   Widget build(BuildContext context) {
     // final name = Firestore.instance
@@ -46,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                   // Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
                   // customCard(),
                   SizedBox(width: 1.0),
-                  Expanded(child: leaderCard(Colors.white70)),
+                  Expanded(child: _getlbaord(),flex: 3,),
                   SizedBox(width: 1.0),
                   // Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
                 ],
@@ -121,12 +136,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget leaderCard(Color color) {
-    int i=0;
+  Widget leaderCard() {
     return Container(
       height: 140,
       width: 120,
-      color: color,
+     // color: color,
       alignment: Alignment.center,
       child: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance
@@ -143,16 +157,19 @@ class _HomePageState extends State<HomePage> {
               crossAxisCount: 3,
               mainAxisSpacing:0.5,
               childAspectRatio: 0.72,
+              addRepaintBoundaries: true,
+              reverse: true,
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
-                    i++;
+                    //i++;
+                    list.add(document.documentID);
                 return new Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
                     Positioned.fill(
                       child: Card(
-                        key: ValueKey(document.data),
-                        color: getcolor(i),
+                        
+                        color: getcolor(document.documentID),
                                                 //elevation: 3,
                                                 child: Column(
                                                   //crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -162,6 +179,7 @@ class _HomePageState extends State<HomePage> {
                                                       height: 10,
                                                     ),
                                                     Text(document['name']),
+                                                  //  Text(document.documentID),
                                                     SizedBox(
                                                       height: 10,
                                                     ),
@@ -170,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                                                       height: 10,
                                                     ),
                                                     Container(
-                                                      child: gettext(i),
+                                                      child: gettext(document.documentID),
                                                       decoration: BoxDecoration(
                                                           borderRadius: BorderRadius.circular(6),
                                                           
@@ -181,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Positioned(
-                                              top: -1,
+                                              top: 1,
                                               left: 33,
                                               child: CircleAvatar(
                                                 child: Image.network(document['profile_pic']),
@@ -191,28 +209,30 @@ class _HomePageState extends State<HomePage> {
                                           overflow: Overflow.visible,
                                         );
                                       }).toList(),
-                                      //crollDirection: Axis.vertical,
+                                      physics: const NeverScrollableScrollPhysics(),
                                     );
                                   }),
                             );
                           }
                         
-                          getcolor(int i) {
-                            if(i==1)
+                          getcolor(String document) {
+                            if(list.first==document)
                             return Colors.white;
                             else return Colors.white60;
                           }
 
-  gettext(int i) {
-    if(i==1)
+  gettext(String document) {
+    print(list);
+   if(list.first==document)
     return  Text("first.".toUpperCase(),style: TextStyle(
       color: Colors.amberAccent
     ),);
-  else if(i==2)
-    return  Text("second".toUpperCase(),style: TextStyle(
+  
+    else if(list[1]==document)
+    return  Text("Second".toUpperCase(),style: TextStyle(
       color: Colors.cyan));
-    else if(i==3)
-    return  Text("Third".toUpperCase(),style: TextStyle(
+      else if(list[2]==document)
+    return  Text("third".toUpperCase(),style: TextStyle(
       color: Colors.cyan));
   }
 
