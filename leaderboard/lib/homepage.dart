@@ -143,6 +143,8 @@ class _HomePageState extends State<HomePage> {
               crossAxisCount: 3,
               mainAxisSpacing:0.5,
               childAspectRatio: 0.72,
+              addRepaintBoundaries: true,
+              reverse: true,
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
                     i++;
@@ -151,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Positioned.fill(
                       child: Card(
-                        key: ValueKey(document.data),
+                        //key: ValueKey(document.data),
                         color: getcolor(i),
                                                 //elevation: 3,
                                                 child: Column(
@@ -181,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                             ),
                                             Positioned(
-                                              top: -1,
+                                              top: 1,
                                               left: 33,
                                               child: CircleAvatar(
                                                 child: Image.network(document['profile_pic']),
@@ -191,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                                           overflow: Overflow.visible,
                                         );
                                       }).toList(),
-                                      //crollDirection: Axis.vertical,
+                                      physics: const NeverScrollableScrollPhysics(),
                                     );
                                   }),
                             );
