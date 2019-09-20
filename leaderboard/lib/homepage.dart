@@ -7,6 +7,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static List list = [];
+  static int i = 0;
+  _getlbaord() {
+    return leaderCard();
+  }
+
+  // final List items = List.generate(20, (i) => i);
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +43,10 @@ class _HomePageState extends State<HomePage> {
                   // Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
                   // customCard(),
                   SizedBox(width: 1.0),
-                  Expanded(child: leaderCard(Colors.white70)),
+                  Expanded(
+                    child: _getlbaord(),
+                    flex: 3,
+                  ),
                   SizedBox(width: 1.0),
                   // Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
                 ],
@@ -53,11 +68,10 @@ class _HomePageState extends State<HomePage> {
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
-                        // items.add(snapshot.data);
-
                         if (snapshot.hasError) {
                           return Text(snapshot.error);
                         }
+                      
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
                             return Center(child: Text('Loading...'));
@@ -110,12 +124,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget leaderCard(Color color) {
-    int i = 0;
+  Widget leaderCard() {
     return Container(
-      height: 140,
+      height: 150,
       width: 120,
-      color: color,
       alignment: Alignment.center,
       child: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance
@@ -130,32 +142,38 @@ class _HomePageState extends State<HomePage> {
             }
             return new GridView.count(
               crossAxisCount: 3,
+              // mainAxisSpacing: 0.5,
+              // childAspectRatio: 0.72,
               mainAxisSpacing: 0.5,
-              childAspectRatio: 0.72,
+              childAspectRatio: 0.79,
+              addRepaintBoundaries: true,
+              reverse: true,
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
-                i++;
+                //i++;
+                list.add(document.documentID);
                 return new Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
                     Positioned.fill(
                       child: Card(
-                        key: ValueKey(document.data),
-                        color: getcolor(i),
+                        color: getcolor(document.documentID),
                         //elevation: 3,
                         child: Column(
                           //crossAxisAlignment: CrossAxisAlignment.stretch,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             SizedBox(
-                              // height: 10,
-                              height: 5.0,
+                              height: 20,
                             ),
-                            Text(document['name'].toString().toUpperCase()),
+                            Text(
+                              document['name'].toString().toUpperCase(),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            //  Text(document.documentID),
                             SizedBox(
-                              // height: 10,
-                              height: 5.0,
-                            ),
+                                // height: 5.0,
+                                ),
                             Text(
                               "\$" + document['price'],
                               style: TextStyle(
@@ -163,11 +181,10 @@ class _HomePageState extends State<HomePage> {
                                   fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
-                              // height: 10,
-                              height: 5.0,
+                              height: 10,
                             ),
                             Container(
-                              child: gettext(i),
+                              child: gettext(document.documentID),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
                                   color: Colors.red),
@@ -177,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Positioned(
-                      top: -1,
+                      top: 1,
                       left: 33,
                       child: CircleAvatar(
                         child: Image.network(document['profile_pic']),
@@ -187,19 +204,53 @@ class _HomePageState extends State<HomePage> {
                   overflow: Overflow.visible,
                 );
               }).toList(),
-              //crollDirection: Axis.vertical,
+              physics: const NeverScrollableScrollPhysics(),
             );
           }),
     );
   }
 
-  getcolor(int i) {
-    if (i == 1)
+  getcolor(String document) {
+    if (list.first == document)
       return Colors.white;
     else
       return Colors.white60;
   }
 
+  gettext(String document) {
+    print(list);
+    if (list.first == document)
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.blueAccent,
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        padding: const EdgeInsets.all(4.0),
+        child: Text(
+          "first".toUpperCase(),
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+    else if (list[1] == document)
+      return Container(
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          padding: const EdgeInsets.all(4.0),
+          child: Text("Second".toUpperCase(),
+              style: TextStyle(color: Colors.white)));
+    else if (list[2] == document)
+      return Container(
+          decoration: BoxDecoration(
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          padding: const EdgeInsets.all(4.0),
+          child: Text("third".toUpperCase(),
+              style: TextStyle(color: Colors.white)));
+  }
+/*
   gettext(int i) {
     if (i == 1)
       return Padding(
@@ -221,5 +272,5 @@ class _HomePageState extends State<HomePage> {
         child:
             Text("Third".toUpperCase(), style: TextStyle(color: Colors.cyan)),
       );
-  }
+  }*/
 }
