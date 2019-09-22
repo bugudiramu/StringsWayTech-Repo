@@ -95,8 +95,8 @@ class _HomePageState extends State<HomePage> {
                                   children: snapshot.data.documents
                                       .map((DocumentSnapshot document) {
                                     return Container(
-                                      height: MediaQuery.of(context).size.height/9.35,
-                                      //width: MediaQuery.of(context).size.width/2,
+                                      height: MediaQuery.of(context).size.height/9.7,
+                                     // width: MediaQuery.of(context).size.width/100,
                                       decoration: BoxDecoration(
                                         color: Colors.blueGrey,
                                         border: Border.all(color: Colors.black87,width: 4),
@@ -105,14 +105,14 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       child: new ListTile(
                                         dense: true,
-                                        //contentPadding: EdgeInsets.all(7),
+                                       // contentPadding: EdgeInsets.only(bo),
                                         leading: Container(
-                                          height: 40.0,
-                                          width: 40.0,
+                                          height: 100.0,
+                                          width: 50.0,
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
                                               image: DecorationImage(
-                                                fit: BoxFit.fitHeight,
+                                                fit: BoxFit.contain,
                                                 image: NetworkImage(
                                                     document['profile_pic']),
                                               )),
@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> {
       return [Colors.red, Colors.redAccent[100]];
     else if (list[1] == document)
       return [Colors.orange, Colors.orangeAccent[100]];
-    else if (list[2] == document) return [Colors.blue, Colors.purpleAccent];
+    else if (list[2] == document) return [Colors.blue, Colors.blueAccent[100]];
 
     return Colors.white60;
   }
@@ -295,9 +295,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   getbox(String documentID) {
-    if (list.first == documentID)
+    //if (list.first == documentID)
       return Colors.black;
-    else
-      return Colors.blue;
+    // else
+    //   return Colors.blue;
   }
 }
