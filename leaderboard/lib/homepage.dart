@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-  
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,9 +9,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   static List list = [];
-  static int i = 0;
+  static List list2=[];
+  // static int i = 0;
 
-   _getlbaord() {
+  _getlbaord() {
     return leaderCard();
   }
 
@@ -39,18 +38,18 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('LeaderBoard'.toUpperCase()),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
       ),
       body: Stack(
         children: <Widget>[
-         
           Container(
             height: MediaQuery.of(context).size.height,
             padding: const EdgeInsets.only(
                 top: 30.0, left: 20.0, right: 20.0, bottom: 5.0),
-            color: Color(0Xffc7ecee),
+            color: Colors.black87,
             child: Card(
               elevation: 7.0,
-              color: Color(0Xffc7ecee),
+              color: Colors.black87,
               child: Column(
                 children: <Widget>[
                   Row(
@@ -59,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       // Expanded(child: leaderCard(120.0, Color(0Xffc7ecee))),
                       // customCard(),
-                      SizedBox(width: 1.0),
+                     SizedBox(width: 1.0),
                       Expanded(
                         child: _getlbaord(),
                         flex: 3,
@@ -69,9 +68,9 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   SizedBox(
-                    height: 3.0,
+                    height: 18.0,
                     child: Container(
-                      color: Color(0Xaaced6e0),
+                      color: Colors.black87,
                     ),
                   ),
                   Expanded(
@@ -95,35 +94,48 @@ class _HomePageState extends State<HomePage> {
                                 return new ListView(
                                   children: snapshot.data.documents
                                       .map((DocumentSnapshot document) {
-                                    return new ListTile(
-                                      leading: Container(
-                                        height: 80.0,
-                                        width: 60.0,
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                              fit: BoxFit.fill,
-                                              image: NetworkImage(
-                                                  document['profile_pic']),
-                                            )),
+                                    return Container(
+                                      height: MediaQuery.of(context).size.height/9.35,
+                                      //width: MediaQuery.of(context).size.width/2,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey,
+                                        border: Border.all(color: Colors.black87,width: 4),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                       ),
-                                      title: new Text(document['name']
-                                          .toString()
-                                          .toUpperCase()),
-                                      subtitle:
-                                          new Text("\$ ${document['price']}"),
-                                      trailing: Container(
-                                        width: 50.0,
-                                        height: 32.0,
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          document['rating'],
-                                          style: TextStyle(color: Colors.white),
+                                      child: new ListTile(
+                                        dense: true,
+                                        //contentPadding: EdgeInsets.all(7),
+                                        leading: Container(
+                                          height: 40.0,
+                                          width: 40.0,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                fit: BoxFit.fitHeight,
+                                                image: NetworkImage(
+                                                    document['profile_pic']),
+                                              )),
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: Color(0xffe58e26),
+                                        title: new Text(document['name']
+                                            .toString()
+                                            .toUpperCase()),
+                                        subtitle:
+                                            new Text("\$ ${document['price']}"),
+                                        trailing: Container(
+                                          width: 50.0,
+                                          height: 32.0,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            document['rating'],
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            color: Color(0xffe58e26),
+                                          ),
                                         ),
                                       ),
                                     );
@@ -137,12 +149,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-           Positioned(
-            
-            left: 63,
-            child:  Icon(MdiIcons.crown,
-            size: 35,) 
-          ),
+          Positioned(
+              left: 63,
+              child: Icon(
+                MdiIcons.crown,
+                size: 35,
+              )),
         ],
       ),
     );
@@ -150,8 +162,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget leaderCard() {
     return Container(
-      height: 140,
-      width: 120,
+      height: 160,
+      width: 200,
       // color: color,
       alignment: Alignment.center,
       child: StreamBuilder<QuerySnapshot>(
@@ -167,51 +179,75 @@ class _HomePageState extends State<HomePage> {
             }
             return new GridView.count(
               crossAxisCount: 3,
-              mainAxisSpacing: 0.5,
-              childAspectRatio: 0.72,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 4,
+              childAspectRatio: 0.70,
               addRepaintBoundaries: true,
               reverse: true,
               children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
                 //i++;
                 list.add(document.documentID);
+                list2.add(document['profile_pic'].toString());
                 return new Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
                     Positioned.fill(
-                      child: Card(
-                        color: getcolor(document.documentID),
-                        child: Column(
-                          //crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(document['name']),
-                            //  Text(document.documentID),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text("\$" + document['price']),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              child: gettext(document.documentID),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: getbox(document.documentID)),
-                            )
-                          ],
+                      child: ClipRRect(
+                        borderRadius: new BorderRadius.only(topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)
+                        ),
+                        child: Container(
+                          //color: getcolor(document.documentID),
+
+                          margin: EdgeInsets.all(1),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment(0.6,
+                                0.0), // 10% of the width, so there are ten blinds.
+                            colors: getcolor(
+                                document.documentID), // whitish to gray
+                            tileMode: TileMode.repeated,
+                          )),
+                          child: Column(
+                            //crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(document['name']),
+                              //  Text(document.documentID),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("\$" + document['price']),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                child: gettext(document.documentID),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6),
+                                    color: getbox(document.documentID)),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     Positioned(
-                      top: 1,
-                      left: 33,
+                      top: -16,
+                      left: 25,
+                      
                       child: CircleAvatar(
-                        child: Image.network(document['profile_pic']),
+                        radius: 27,
+                        child: Image.network(document['profile_pic'],
+                        height: 140,width: 100,
+                        scale: 0.6,),
                       ),
                     ),
                   ],
@@ -226,9 +262,12 @@ class _HomePageState extends State<HomePage> {
 
   getcolor(String document) {
     if (list.first == document)
-      return Colors.white;
-    else
-      return Colors.white60;
+      return [Colors.red, Colors.redAccent[100]];
+    else if (list[1] == document)
+      return [Colors.orange, Colors.orangeAccent[100]];
+    else if (list[2] == document) return [Colors.blue, Colors.purpleAccent];
+
+    return Colors.white60;
   }
 
   gettext(String document) {

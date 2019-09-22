@@ -10,7 +10,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: HomePage(),
       theme: ThemeData(
-        primaryColor: Color(0Xffc7ecee),
+       // primaryColor: Color(0Xffc7ecee),
+       brightness: Brightness.dark
       ),
     );
   }
